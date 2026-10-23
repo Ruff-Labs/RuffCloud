@@ -39,6 +39,11 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-surface-low: var(--surface-low);
+  --color-surface-hover: var(--surface-hover);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -49,72 +54,106 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Light counterpart of the RuffFirmware GUI palette (gui/qml/Theme.qml). */
+  --background: #F4F5F8;
+  --foreground: #12151B;
+  --card: #FFFFFF;
+  --card-foreground: #12151B;
+  --popover: #FFFFFF;
+  --popover-foreground: #12151B;
+  --primary: #2F6FE8;
+  --primary-foreground: #FFFFFF;
+  --secondary: #ECEEF3;
+  --secondary-foreground: #12151B;
+  --muted: #ECEEF3;
+  --muted-foreground: #5B6475;
+  --accent: #ECEEF3;
+  --accent-foreground: #12151B;
+  --destructive: #D93838;
+  --border: #DDE1E8;
+  --input: #D3D8E1;
+  --ring: #2F6FE8;
+  --chart-1: #2F6FE8;
+  --chart-2: #1FA86A;
+  --chart-3: #C98A0B;
+  --chart-4: #D93838;
+  --chart-5: #5B6475;
+  --radius: 0.75rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #12151B;
+  --sidebar-primary: #2F6FE8;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #ECEEF3;
+  --sidebar-accent-foreground: #12151B;
+  --sidebar-border: #DDE1E8;
+  --sidebar-ring: #2F6FE8;
+
+  /* Extra firmware tokens */
+  --surface-low: #F9FAFC;
+  --surface-hover: #ECEEF3;
+  --highlight: rgb(255 255 255 / 0.9);
+  --success: #1FA86A;
+  --warning: #B87D06;
+  --danger: #D93838;
 }
 
+/* Dark mode = RuffFirmware GUI Theme.qml values. */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #0F1115;
+  --foreground: #F2F4F8;
+  --card: #1A1D24;
+  --card-foreground: #F2F4F8;
+  --popover: #1A1D24;
+  --popover-foreground: #F2F4F8;
+  --primary: #4F8CFF;
+  --primary-foreground: #FFFFFF;
+  --secondary: #232733;
+  --secondary-foreground: #F2F4F8;
+  --muted: #232733;
+  --muted-foreground: #8A93A6;
+  --accent: #232733;
+  --accent-foreground: #F2F4F8;
+  --destructive: #FF5C5C;
+  --border: #2C313D;
+  --input: #2C313D;
+  --ring: #4F8CFF;
+  --chart-1: #4F8CFF;
+  --chart-2: #3DD68C;
+  --chart-3: #F5B83D;
+  --chart-4: #FF5C5C;
+  --chart-5: #8A93A6;
+  --sidebar: #16191F;
+  --sidebar-foreground: #F2F4F8;
+  --sidebar-primary: #4F8CFF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #232733;
+  --sidebar-accent-foreground: #F2F4F8;
+  --sidebar-border: #2C313D;
+  --sidebar-ring: #4F8CFF;
+
+  --surface-low: #16191F;
+  --surface-hover: #232733;
+  --highlight: rgb(255 255 255 / 0.06);
+  --success: #3DD68C;
+  --warning: #F5B83D;
+  --danger: #FF5C5C;
+}
+
+/* Firmware Card.qml: faint top-to-bottom gradient, soft border, 1px top highlight. */
+@utility surface-card {
+  background-image: linear-gradient(to bottom, var(--card), var(--surface-low));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: inset 0 1px 0 var(--highlight);
+}
+
+/* Firmware SectionLabel.qml: small uppercase muted heading. */
+@utility section-label {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 @layer base {
