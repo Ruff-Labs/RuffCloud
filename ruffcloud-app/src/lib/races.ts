@@ -4,7 +4,6 @@ export type Lane = "Left" | "Right"
 
 export type RaceResultRow = {
   id: number
-  board_id: string
   heat: number
   race: number
   lane: Lane
@@ -17,7 +16,6 @@ export type RaceResultRow = {
   early_passes?: number[] // 1-based dog numbers that passed early
   status?: "live" | "final"
   revision?: number
-  firmware?: string
 }
 
 export type LaneResult = Pick<
@@ -27,32 +25,28 @@ export type LaneResult = Pick<
 
 export type Race = {
   key: string
-  board_id: string
   heat: number
   race: number
   status: "live" | "final"
   revision: number
-  firmware: string | null
   modified_at: string | null
   left: LaneResult | null
   right: LaneResult | null
 }
 
-// Join the Left/Right rows of each race and sort newest first.
+// join the Left/Right rows of each race and sort newest first.
 export function groupRaces(rows: RaceResultRow[]): Race[] {
   const byKey = new Map<string, Race>()
   for (const row of rows) {
-    const key = `${row.board_id}:${row.race}`
+    const key = String(row.race)
     let race = byKey.get(key)
     if (!race) {
       race = {
         key,
-        board_id: row.board_id,
         heat: row.heat,
         race: row.race,
         status: row.status ?? "final",
         revision: row.revision ?? 1,
-        firmware: row.firmware ?? null,
         modified_at: row.modified_at,
         left: null,
         right: null,
@@ -69,8 +63,15 @@ export function groupRaces(rows: RaceResultRow[]): Race[] {
   return [...byKey.values()].sort((a, b) => b.race - a.race)
 }
 
+// pp to 3 decimals, without trailing zeros: 1200 → "1.2", 5493 → "5.493".
 export function formatSeconds(ms: number) {
-  return (ms / 1000).toFixed(3)
+  return String(Number((ms / 1000).toFixed(3)))
+}
+
+// total lane time in seconds or null for FS / DNF / no time.
+export function laneSeconds(lane: LaneResult | null) {
+  const t = lane?.race_time
+  return t != null && /^-?\d+(\.\d+)?$/.test(t) ? Number(t) / 1000 : null
 }
 
 export type LaneView = {
@@ -127,19 +128,19 @@ export function timeAgo(iso: string | null, now = Date.now()) {
   return `${d} day${d === 1 ? "" : "s"} ago`
 }
 
-// Placeholder rows until the dashboard reads from Supabase.
+// placeholder rows until the dashboard reads from Supabase.
 const T = "2026-10-23T"
 export const sampleRows: RaceResultRow[] = [
-  { id: 1, board_id: "Light Tree Pero", heat: 6, race: 23, lane: "Left", start_time: `${T}18:39:02Z`, splits_ms: [56, 3860, 3770, 3773, 3934], race_time: "15393", modified_at: `${T}18:39:20Z`, operator: "Layla", firmware: "1.6.5-test10" },
-  { id: 2, board_id: "Light Tree Pero", heat: 6, race: 23, lane: "Right", start_time: null, splits_ms: null, race_time: null, modified_at: `${T}18:39:20Z`, operator: "Layla", firmware: "1.6.5-test10" },
-  { id: 3, board_id: "Light Tree Pero", heat: 6, race: 22, lane: "Left", start_time: `${T}18:31:40Z`, splits_ms: [67, 3828, 3800, 3820, 3822], race_time: "15337", modified_at: `${T}18:32:00Z`, operator: "Layla", firmware: "1.6.5-test10" },
-  { id: 4, board_id: "Light Tree Pero", heat: 6, race: 22, lane: "Right", start_time: `${T}18:31:40Z`, splits_ms: [-15, 3765, 3827, 3761, 3740], race_time: "15078", modified_at: `${T}18:32:00Z`, operator: "Layla", early_passes: [4], firmware: "1.6.5-test10" },
-  { id: 5, board_id: "Light Tree Pero", heat: 5, race: 21, lane: "Left", start_time: `${T}18:20:11Z`, splits_ms: [122, 3928, 3951, 3998, 3941], race_time: "15940", modified_at: `${T}18:20:30Z`, operator: "Layla", firmware: "1.6.5-test10" },
-  { id: 6, board_id: "Light Tree Pero", heat: 5, race: 21, lane: "Right", start_time: `${T}18:20:11Z`, splits_ms: [-7, 3812, 3776, 4126, 3668], race_time: "15375", modified_at: `${T}18:20:30Z`, operator: "Layla", early_passes: [2, 4], firmware: "1.6.5-test10" },
-  { id: 7, board_id: "Light Tree Pero", heat: 5, race: 20, lane: "Left", start_time: `${T}18:12:51Z`, splits_ms: [-991, 6258], race_time: "5267", modified_at: `${T}18:13:05Z`, operator: "Layla", firmware: "1.6.5-test10" },
-  { id: 8, board_id: "Light Tree Pero", heat: 5, race: 20, lane: "Right", start_time: `${T}18:12:51Z`, splits_ms: [82, 3765, 3947, 3811, 3990], race_time: "15595", modified_at: `${T}18:13:05Z`, operator: "Layla", early_passes: [3], firmware: "1.6.5-test10" },
-  { id: 9, board_id: "Light Tree Pero", heat: 4, race: 19, lane: "Left", start_time: `${T}18:04:30Z`, splits_ms: [558, 4088], race_time: "DNF", modified_at: `${T}18:05:02Z`, operator: "Layla", revision: 2, firmware: "1.6.5-test10" },
-  { id: 10, board_id: "Light Tree Pero", heat: 4, race: 19, lane: "Right", start_time: `${T}18:04:30Z`, splits_ms: [91, 3781, 4259, 3947, 3989], race_time: "16067", modified_at: `${T}18:05:02Z`, operator: "Layla", early_passes: [2], firmware: "1.6.5-test10" },
-  { id: 11, board_id: "Ring 2 Board", heat: 1, race: 4, lane: "Left", start_time: `${T}17:50:00Z`, splits_ms: [140, 4012, 3988, 4105, 4020], race_time: "16265", modified_at: `${T}17:50:22Z`, operator: "Sam", status: "live", firmware: "1.6.4" },
-  { id: 12, board_id: "Ring 2 Board", heat: 1, race: 4, lane: "Right", start_time: `${T}17:50:00Z`, splits_ms: [210], race_time: "FS", modified_at: `${T}17:50:22Z`, operator: "Sam", status: "live", firmware: "1.6.4" },
+  { id: 1, heat: 6, race: 23, lane: "Left", start_time: `${T}18:39:02Z`, splits_ms: [100, 1200, 1400, 1300, 1500], race_time: "5500", modified_at: `${T}18:39:20Z`, operator: "Layla" },
+  { id: 2, heat: 6, race: 23, lane: "Right", start_time: null, splits_ms: null, race_time: null, modified_at: `${T}18:39:20Z`, operator: "Layla" },
+  { id: 3, heat: 6, race: 22, lane: "Left", start_time: `${T}18:31:40Z`, splits_ms: [200, 1400, 1200, 1600, 1300], race_time: "5700", modified_at: `${T}18:32:00Z`, operator: "Layla" },
+  { id: 4, heat: 6, race: 22, lane: "Right", start_time: `${T}18:31:40Z`, splits_ms: [-100, 1100, 1300, 1200, 1400], race_time: "4900", modified_at: `${T}18:32:00Z`, operator: "Layla", early_passes: [4] },
+  { id: 5, heat: 5, race: 21, lane: "Left", start_time: `${T}18:20:11Z`, splits_ms: [100, 1500, 1400, 1700, 1200], race_time: "5900", modified_at: `${T}18:20:30Z`, operator: "Layla" },
+  { id: 6, heat: 5, race: 21, lane: "Right", start_time: `${T}18:20:11Z`, splits_ms: [-200, 1300, 1100, 1500, 1400], race_time: "5100", modified_at: `${T}18:20:30Z`, operator: "Layla", early_passes: [2, 4] },
+  { id: 7, heat: 5, race: 20, lane: "Left", start_time: `${T}18:12:51Z`, splits_ms: [-300, 1600], race_time: "1300", modified_at: `${T}18:13:05Z`, operator: "Layla" },
+  { id: 8, heat: 5, race: 20, lane: "Right", start_time: `${T}18:12:51Z`, splits_ms: [100, 1200, 1500, 1300, 1400], race_time: "5500", modified_at: `${T}18:13:05Z`, operator: "Layla", early_passes: [3] },
+  { id: 9, heat: 4, race: 19, lane: "Left", start_time: `${T}18:04:30Z`, splits_ms: [200, 1800], race_time: "DNF", modified_at: `${T}18:05:02Z`, operator: "Layla", revision: 2 },
+  { id: 10, heat: 4, race: 19, lane: "Right", start_time: `${T}18:04:30Z`, splits_ms: [100, 1400, 1600, 1200, 1300], race_time: "5600", modified_at: `${T}18:05:02Z`, operator: "Layla", early_passes: [2] },
+  { id: 11, heat: 1, race: 4, lane: "Left", start_time: `${T}17:50:00Z`, splits_ms: [200, 1300, 1400, 1200, 1500], race_time: "5600", modified_at: `${T}17:50:22Z`, operator: "Sam", status: "live" },
+  { id: 12, heat: 1, race: 4, lane: "Right", start_time: `${T}17:50:00Z`, splits_ms: [200], race_time: "FS", modified_at: `${T}17:50:22Z`, operator: "Sam", status: "live" },
 ]

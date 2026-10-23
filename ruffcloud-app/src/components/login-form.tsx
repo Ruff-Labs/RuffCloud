@@ -15,16 +15,18 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 
+// Colors come from theme tokens (see theme.css) so this matches the dashboard in light and dark.
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="border-zinc-200 shadow-sm ">
+      <Card className="surface-card relative overflow-hidden">
+        <span className="absolute inset-x-0 top-0 h-1 bg-primary" />
         <CardHeader>
-          <CardTitle className="text-zinc-700">Login to your account</CardTitle>
-          <CardDescription className="text-zinc-400">
+          <CardTitle>Login to your account</CardTitle>
+          <CardDescription>
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
@@ -32,34 +34,33 @@ export function LoginForm({
           <form>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email" className="text-zinc-600">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  className="border-zinc-200 text-zinc-700 placeholder:text-zinc-300"
-                />
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input id="email" type="email" placeholder="m@example.com" required />
               </Field>
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <a
                     href="#"
-                    className="ml-auto inline-block text-sm text-zinc-500 underline-offset-4 hover:underline"
+                    className="ml-auto inline-block text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline"
                   >
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required  className="border-zinc-200"/>
+                <Input id="password" type="password" required />
               </Field>
               <Field>
-                <Button type="submit" className="w-full bg-[#F15946] hover:bg-[#D94E3D] text-white">Login</Button>
-                <Button variant="outline" type="button" className="w-full border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:text-zinc-800">
+                <Button type="submit" className="w-full">
+                  Login
+                </Button>
+                <Button variant="outline" type="button" className="w-full">
                   Login with Google
                 </Button>
-                <FieldDescription className="text-center text-zinc-400">
-                  Don&apos;t have an account? <a href="#" className="text-[#F15946] hover:underline underline-offset-4">Sign up</a>
+                <FieldDescription className="text-center">
+                  Don&apos;t have an account?{" "}
+                  <a href="#" className="font-medium text-primary underline-offset-4 hover:underline">
+                    Sign up
+                  </a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

@@ -1,0 +1,156 @@
+/*
+  RuffCloud theme — one palette for every page.
+  Merge into app/globals.css: replace your existing :root / .dark color blocks,
+  the @theme inline color mappings, and any old surface-card / section-label definitions.
+  Keep your @import "tailwindcss" (and tw-animate-css) lines at the top as they are.
+
+  Brand coral (#F15946) is the primary everywhere. Lanes get their own colors
+  (left = sky, right = amber) so they read at a glance on the big display.
+*/
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.75rem;
+
+  --background: #f5f7fb;
+  --foreground: #121826;
+  --card: #ffffff;
+  --card-foreground: #121826;
+  --popover: #ffffff;
+  --popover-foreground: #121826;
+
+  --primary: #f15946;
+  --primary-foreground: #ffffff;
+  --secondary: #edf1f7;
+  --secondary-foreground: #121826;
+  --muted: #edf1f7;
+  --muted-foreground: #5b6578;
+  --accent: #fde9e5;
+  --accent-foreground: #b4321f;
+  --destructive: #dc2626;
+
+  --border: #e1e6ef;
+  --input: #d5dbe6;
+  --ring: #f15946;
+
+  --surface-hover: #edf1f7;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --lane-left: #0284c7;
+  --lane-right: #d97706;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #121826;
+  --sidebar-primary: #f15946;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fde9e5;
+  --sidebar-accent-foreground: #b4321f;
+  --sidebar-border: #e1e6ef;
+  --sidebar-ring: #f15946;
+}
+
+.dark {
+  /* Deep slate instead of pure black: brighter, easier to read across a room */
+  --background: #0e141f;
+  --foreground: #f3f6fb;
+  --card: #172030;
+  --card-foreground: #f3f6fb;
+  --popover: #1b2537;
+  --popover-foreground: #f3f6fb;
+
+  --primary: #ff6b57;
+  --primary-foreground: #ffffff;
+  --secondary: #222d40;
+  --secondary-foreground: #f3f6fb;
+  --muted: #222d40;
+  --muted-foreground: #9aa6bb;
+  --accent: #3a2224;
+  --accent-foreground: #ff9a8b;
+  --destructive: #f87171;
+
+  --border: #2a364b;
+  --input: #33415a;
+  --ring: #ff6b57;
+
+  --surface-hover: #222d40;
+  --success: #34d399;
+  --danger: #f87171;
+  --lane-left: #38bdf8;
+  --lane-right: #fbbf24;
+
+  --sidebar: #121a28;
+  --sidebar-foreground: #f3f6fb;
+  --sidebar-primary: #ff6b57;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #222d40;
+  --sidebar-accent-foreground: #f3f6fb;
+  --sidebar-border: #2a364b;
+  --sidebar-ring: #ff6b57;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-surface-hover: var(--surface-hover);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-lane-left: var(--lane-left);
+  --color-lane-right: var(--lane-right);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@utility surface-card {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
+}
+
+@utility section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
